@@ -78,9 +78,9 @@ convo = model.start_chat(history=[
 
 
 # User message input
-user_message = st.text_input("Your question:")
+user_message = st.text_input("שאל את חוזר מנכל החינוך המיוחד שעוסק בועדות:")
 
 if st.button("Send"):
     convo.send_message(user_message)
     response = convo.last.text
-    st.write("Response:", response)
+    st.write(response)
