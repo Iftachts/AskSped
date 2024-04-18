@@ -78,38 +78,25 @@ convo = model.start_chat(history=[
 ])
 
 
-
 def send_and_display_message():
     if st.session_state.user_message.strip():
         with st.spinner('Sending...'):
-            convo.send_message(st.session_state.user_message)
-            response = convo.last.text
+            # Simulate sending a message
+            response = "Simulated response for: " + st.session_state.user_message
 
         if response:
-            # Sanitize the response for use in JavaScript
-            js_safe_response = response.replace('`', '\\`').replace("'", "\\'")
-
-            # Construct the button HTML using a normal string to avoid f-string complexities
-            button_html = f"""
-            <button onclick="try {{
-                navigator.clipboard.writeText('{js_safe_response}');
-                alert('Copied!');
-            }} catch(err) {{
-                console.error('Failed to copy:', err);
-                alert('Failed to copy text.');
-            }}">Copy to Clipboard</button>"""
-
-            # Display the response and the button
-            message_display = st.empty()
-            message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}<br>{button_html}</div>", unsafe_allow_html=True)
             st.success("Response is displayed. Click copy to clipboard.")
+            st.write(response)  # Display the response
+            st.session_state.user_message = ""  # Clear the input field after processing
         else:
             st.error("No response received, please try again.")
-        # Clear the input field after processing
-        st.session_state.user_message = ""
     else:
         st.error("Please enter a valid message.")
 
-user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
+if 'user_message' not in st.session_state:
+    st.session_state.user_message = ""
+
+user_message = st.text_input("Enter your message:", value=st.session_state.user_message, key="user_message", on_change=send_and_display_message)
+
 if st.button("Send"):
     send_and_display_message()
