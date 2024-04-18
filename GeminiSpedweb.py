@@ -95,15 +95,5 @@ def send_and_display_message():
     else:
         st.error("Please enter a valid message.")
 # Set up UI for input
-# Custom CSS to make the text input larger
-st.markdown("""
-<style>
-input[data-testid="stTextInput"] {
-    height: 100px;  # Sets the height of the input
-    width: 500px;  # Sets the width of the input
-}
-</style>
-""", unsafe_allow_html=True)
-
-user_message = st.text_input("שאל לגבי ועדות החינוך המיוחד:", key="user_message", on_change=send_and_display_message)
+user_message = st.text_area("שאל לגבי ועדות החינוך המיוחד:", key="user_message", on_change=send_and_display_message)
 
