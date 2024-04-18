@@ -76,8 +76,6 @@ convo = model.start_chat(history=[
 ])
 
 
-import streamlit as st
-
 # Function to handle the sending and display of messages
 def send_and_display_message():
     if st.session_state.user_message.strip():  # Check for non-empty input
