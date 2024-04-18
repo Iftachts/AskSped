@@ -79,8 +79,6 @@ convo = model.start_chat(history=[
 ])
 
 
-import streamlit as st
-
 def send_and_display_message():
     # Reinitialize the placeholder at each call to ensure it's fresh
     message_display = st.empty()
