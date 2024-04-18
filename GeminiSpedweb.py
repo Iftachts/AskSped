@@ -1,6 +1,6 @@
 import streamlit as st
 import google.generativeai as genai
-from streamlit_clipboard import st_clipboard
+
 # Create a global placeholder for the message display at the top level of your script
 message_display = st.empty()
 
@@ -77,6 +77,7 @@ convo = model.start_chat(history=[
     "parts": ["תודה על הפירוט המלא של רשימת הנספחים. זוהי אכן רשימה מקיפה של הטפסים, ההצהרות וההנחיות הנדרשות לצורך התנהלות תקינה של הוועדות השונות הפועלות מתוקף חוק החינוך המיוחד. \n\nהאם יש שאלות ספציפיות בנוגע לנספח מסויים או לתהליך מסויים?"]
   },
 ])
+
 def send_and_display_message():
     message_display = st.empty()
 
@@ -88,9 +89,21 @@ def send_and_display_message():
 
             if response:
                 # Display the response
-                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}</div>", unsafe_allow_html=True)
-                # Provide a button to copy the response
-                st_clipboard.text(response, label="Copy to clipboard", success_message="Copied to clipboard!")
+                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;' id='response_text'>**Response:** {response}</div>", unsafe_allow_html=True)
+                # Button to copy the response
+                if st.button('Copy to Clipboard'):
+                    st.markdown(
+                        """
+                        <script>
+                        const text = document.getElementById('response_text').innerText;
+                        navigator.clipboard.writeText(text).then(function() {
+                            console.log('Async: Copying to clipboard was successful!');
+                        }, function(err) {
+                            console.error('Async: Could not copy text: ', err);
+                        });
+                        </script>
+                        """, unsafe_allow_html=True)
+                    st.success("Copied to clipboard!")
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
 
