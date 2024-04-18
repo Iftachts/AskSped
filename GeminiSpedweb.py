@@ -74,16 +74,16 @@ convo = model.start_chat(history=[
 ])
 
 def send_and_display_message():
-    # Reinitialize the placeholder at each call to ensure it's fresh
     message_display = st.empty()
-    if st.session_state.user_message.strip():  # Check for non-empty input
+    user_message = st.session_state.user_message
+    if user_message.strip():  # Check for non-empty input
         try:
-            with st.spinner('ממתין לתשובה...'):
-                convo.send_message(st.session_state.user_message)
+            with st.spinner('Waiting for response...'):
+                # Assume convo.send_message sends the message and receives a response
+                convo.send_message(user_message)
                 response = convo.last.text
-            # Removed the debug write statement
+
             if response:
-                # Update the placeholder with the new response
                 message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'> {response}</div>", unsafe_allow_html=True)
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
@@ -94,6 +94,6 @@ def send_and_display_message():
             message_display.markdown(f"**Error:** {str(e)}", unsafe_allow_html=True)
     else:
         st.error("Please enter a valid message.")
-# Set up UI for input
-user_message = st.text_area("שאל לגבי ועדות החינוך המיוחד:", key="user_message", on_change=send_and_display_message)
 
+# Set up UI for input
+user_message = st.text_input("Type your question about special education committees:", key="user_message", on_enter=send_and_display_message)
