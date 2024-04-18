@@ -78,43 +78,27 @@ convo = model.start_chat(history=[
 ])
 
 def send_and_display_message():
-    message_display = st.empty()
+    if st.session_state.user_message.strip():  # Check for non-empty input
+        with st.spinner('Sending...'):
+            convo.send_message(st.session_state.user_message)
+            response = convo.last.text
 
-    if st.session_state.user_message.strip():
-        try:
-            with st.spinner('Sending...'):
-                convo.send_message(st.session_state.user_message)
-                response = convo.last.text
-
-            if response:
-                # Display the response
-                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;' id='response_text'>**Response:** {response}</div>", unsafe_allow_html=True)
-                # Button to copy the response
-                if st.button('Copy to Clipboard'):
-                    st.markdown(
-                        """
-                        <script>
-                        const text = document.getElementById('response_text').innerText;
-                        navigator.clipboard.writeText(text).then(function() {
-                            console.log('Async: Copying to clipboard was successful!');
-                        }, function(err) {
-                            console.error('Async: Could not copy text: ', err);
-                        });
-                        </script>
-                        """, unsafe_allow_html=True)
-                    st.success("Copied to clipboard!")
-            else:
-                message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
-
-            # Clear the input field after processing
-            st.session_state.user_message = ""
-
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
-            message_display.markdown(f"**Error:** {str(e)}", unsafe_allow_html=True)
+        if response:
+            # Display the response with a copy button
+            # Unique key ensures that the button's function is tied to this specific response
+            unique_key = hash(response)  
+            button_html = f"<button onclick=\"navigator.clipboard.writeText('{response.replace("'", '&#39;')}');\">Copy to Clipboard</button>"
+            message_display = st.empty()
+            message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response} {button_html}</div>", unsafe_allow_html=True)
+            st.success("Response is displayed. Click copy to clipboard.")
+        else:
+            st.error("No response received, please try again.")
+        # Clear the input field after processing
+        st.session_state.user_message = ""
     else:
         st.error("Please enter a valid message.")
 
+# UI setup
 user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
 if st.button("Send"):
     send_and_display_message()
