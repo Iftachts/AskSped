@@ -79,10 +79,9 @@ convo = model.start_chat(history=[
 ])
 
 def send_and_display_message():
-    # Reinitialize the placeholder at each call to ensure it's fresh
     message_display = st.empty()
 
-    if st.session_state.user_message.strip():  # Check for non-empty input
+    if st.session_state.user_message.strip():
         try:
             with st.spinner('Sending...'):
                 convo.send_message(st.session_state.user_message)
@@ -90,8 +89,9 @@ def send_and_display_message():
 
             if response:
                 # Display the response with a copy button
-                copy_button = f"<button onclick='navigator.clipboard.writeText(`{response}`)'>Copy</button>"
-                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response} {copy_button}</div>", unsafe_allow_html=True)
+                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}</div>", unsafe_allow_html=True)
+                if st.button("Copy", key="copy_button"):
+                    st.session_state.copy_text = response  # Set the response to be copied
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
 
@@ -101,12 +101,16 @@ def send_and_display_message():
         except Exception as e:
             st.error(f"An error occurred: {e}")
             message_display.markdown(f"**Error:** {str(e)}", unsafe_allow_html=True)
-
     else:
         st.error("Please enter a valid message.")
 
-# Set up UI for input
-user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
+# Trigger to copy text to clipboard using JavaScript
+if 'copy_text' in st.session_state and st.session_state.copy_text:
+    js = f"navigator.clipboard.writeText('{st.session_state.copy_text}')"
+    st.markdown(f'<img src onerror="{js}">', unsafe_allow_html=True)
+    st.success("Copied to clipboard!")
+    st.session_state.copy_text = None  # Reset after copying
 
+user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
 if st.button("Send"):
     send_and_display_message()
