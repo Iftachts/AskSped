@@ -76,12 +76,16 @@ convo = model.start_chat(history=[
 ])
 
 
+import streamlit as st
+
+# Function to handle the sending and display of messages
 def send_and_display_message():
     if st.session_state.user_message.strip():  # Check for non-empty input
         try:
             convo.send_message(st.session_state.user_message)
             response = convo.last.text
-            st.write(response)
+            # Use the placeholder to display the response like a popup
+            message_display.markdown(f"**Response:**\n{response}", unsafe_allow_html=True)
             st.session_state.user_message = ""  # Clear input field after sending
         except Exception as e:
             st.error(f"An error occurred: {e}")
@@ -89,8 +93,11 @@ def send_and_display_message():
     else:
         st.error("Please enter a valid message.")
 
+# Placeholder for displaying messages dynamically
+message_display = st.empty()
+
 # Text input with session state
-user_message = st.text_input("שאל את חוזר מנכל החינוך המיוחד שעוסק בועדות:", key="user_message", on_change=send_and_display_message)
+user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
 
 # Button to manually trigger sending and displaying messages
 if st.button("Send"):
