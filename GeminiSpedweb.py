@@ -99,7 +99,7 @@ def send_and_display_message():
 st.markdown("""
 <style>
 input[data-testid="stTextInput"] {
-    height: 50px;  # Sets the height of the input
+    height: 100px;  # Sets the height of the input
     width: 500px;  # Sets the width of the input
 }
 </style>
