@@ -74,34 +74,34 @@ convo = model.start_chat(history=[
     "parts": ["תודה על הפירוט המלא של רשימת הנספחים. זוהי אכן רשימה מקיפה של הטפסים, ההצהרות וההנחיות הנדרשות לצורך התנהלות תקינה של הוועדות השונות הפועלות מתוקף חוק החינוך המיוחד. \n\nהאם יש שאלות ספציפיות בנוגע לנספח מסויים או לתהליך מסויים?"]
   },
 ])
-# Define the placeholder at the top level to ensure it's globally accessible
+import streamlit as st
+
 message_display = st.empty()
 
-# Function to handle the sending and display of messages
 def send_and_display_message():
-    st.write("Function triggered")  # Confirm function is triggered
-
     if st.session_state.user_message.strip():  # Check for non-empty input
         try:
             convo.send_message(st.session_state.user_message)
             response = convo.last.text
-            st.write(f"Debug: Response received: {response}")  # Log the response for debugging
+            st.write(f"Debug: Response received: {response}")  # Debug output
+
             if response:
-                # Clear previous content and update the placeholder
-                message_display.empty()
+                message_display.empty()  # Clear any previous content
                 message_display.markdown(f"**Response:**\n{response}", unsafe_allow_html=True)
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
+            
             # Clear input field after sending
             st.session_state.user_message = ""
+            st.experimental_rerun()  # Force rerun to refresh the UI
+
         except Exception as e:
             st.error(f"An error occurred: {e}")
+
     else:
         st.error("Please enter a valid message.")
 
-# Text input with session state
 user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
 
-# Button to manually trigger sending and displaying messages
 if st.button("Send"):
     send_and_display_message()
