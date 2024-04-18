@@ -78,6 +78,7 @@ convo = model.start_chat(history=[
 ])
 
 
+
 def send_and_display_message():
     if st.session_state.user_message.strip():
         with st.spinner('Sending...'):
@@ -85,16 +86,26 @@ def send_and_display_message():
             response = convo.last.text
 
         if response:
-            # Create the button HTML with JavaScript embedded
-            button_html = f"""<button onclick="try{{navigator.clipboard.writeText(`{response.replace('`', '\\`')}`); alert('Copied!');}}
-                     catch(err){{console.error('Failed to copy:', err); alert('Failed to copy text.');}}">Copy to Clipboard</button>"""
+            # Sanitize the response for use in JavaScript
+            js_safe_response = response.replace('`', '\\`').replace("'", "\\'")
 
-            # Use markdown to render the button and the response with unsafe_allow_html set to True
+            # Construct the button HTML using a normal string to avoid f-string complexities
+            button_html = f"""
+            <button onclick="try {{
+                navigator.clipboard.writeText('{js_safe_response}');
+                alert('Copied!');
+            }} catch(err) {{
+                console.error('Failed to copy:', err);
+                alert('Failed to copy text.');
+            }}">Copy to Clipboard</button>"""
+
+            # Display the response and the button
             message_display = st.empty()
             message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}<br>{button_html}</div>", unsafe_allow_html=True)
             st.success("Response is displayed. Click copy to clipboard.")
         else:
             st.error("No response received, please try again.")
+        # Clear the input field after processing
         st.session_state.user_message = ""
     else:
         st.error("Please enter a valid message.")
