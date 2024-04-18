@@ -88,6 +88,9 @@ def send_and_display_message():
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
         except Exception as e:
             message_display.markdown(f"**Error:** {str(e)}", unsafe_allow_html=True)
+        finally:
+            # Clear the input field after sending the message or receiving the response
+            st.session_state.user_message = ""
     else:
         st.error("Please enter a valid message.")
 
