@@ -96,5 +96,3 @@ def send_and_display_message():
         st.error("Please enter a valid message.")
 # Set up UI for input
 user_message = st.text_input("שאל לגבי ועדות החינוך המיוחד:", key="user_message", on_change=send_and_display_message)
-if st.button("Send"):
-    send_and_display_message()
