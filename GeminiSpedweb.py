@@ -84,10 +84,9 @@ def send_and_display_message():
             response = convo.last.text
 
         if response:
-            # Display the response with a copy button
-            # Unique key ensures that the button's function is tied to this specific response
-            unique_key = hash(response)  
-            button_html = f"<button onclick=\"navigator.clipboard.writeText('{response.replace(\"'\", '&#39;')}'');\">Copy to Clipboard</button>"
+            # Prepare the JavaScript part separately to handle quotes properly
+            js_copy_text = response.replace("'", "&#39;")
+            button_html = f"<button onclick=\"navigator.clipboard.writeText('{js_copy_text}');\">Copy to Clipboard</button>"
             message_display = st.empty()
             message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response} {button_html}</div>", unsafe_allow_html=True)
             st.success("Response is displayed. Click copy to clipboard.")
