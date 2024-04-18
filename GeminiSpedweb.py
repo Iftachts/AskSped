@@ -75,19 +75,21 @@ convo = model.start_chat(history=[
   },
 ])
 
-
-# Function to handle the sending and display of messages
 def send_and_display_message():
     if st.session_state.user_message.strip():  # Check for non-empty input
         try:
             convo.send_message(st.session_state.user_message)
             response = convo.last.text
-            # Use the placeholder to display the response like a popup
-            message_display.markdown(f"**Response:**\n{response}", unsafe_allow_html=True)
-            st.session_state.user_message = ""  # Clear input field after sending
+            if response:
+                # Update the placeholder with the response
+                message_display.markdown(f"**Response:**\n{response}", unsafe_allow_html=True)
+            else:
+                # If response is empty, display a default message
+                message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
+            # Clear input field after sending
+            st.session_state.user_message = ""  
         except Exception as e:
             st.error(f"An error occurred: {e}")
-            # Optionally, log the error or take other actions
     else:
         st.error("Please enter a valid message.")
 
