@@ -74,33 +74,34 @@ convo = model.start_chat(history=[
     "parts": ["תודה על הפירוט המלא של רשימת הנספחים. זוהי אכן רשימה מקיפה של הטפסים, ההצהרות וההנחיות הנדרשות לצורך התנהלות תקינה של הוועדות השונות הפועלות מתוקף חוק החינוך המיוחד. \n\nהאם יש שאלות ספציפיות בנוגע לנספח מסויים או לתהליך מסויים?"]
   },
 ])
-import streamlit as st
 
+# Global placeholder for the message display
 message_display = st.empty()
 
 def send_and_display_message():
-    if st.session_state.user_message.strip():  # Check for non-empty input
+    if st.session_state.user_message.strip():  # Ensure there's a non-empty message
         try:
             convo.send_message(st.session_state.user_message)
             response = convo.last.text
-            st.write(f"Debug: Response received: {response}")  # Debug output
-
+            st.write(f"Debug: Response received: {response}")  # Confirm response receipt
+            
             if response:
-                message_display.empty()  # Clear any previous content
-                message_display.markdown(f"**Response:**\n{response}", unsafe_allow_html=True)
+                # Update the placeholder with the new response
+                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}</div>", unsafe_allow_html=True)
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
             
             # Clear input field after sending
             st.session_state.user_message = ""
-            st.experimental_rerun()  # Force rerun to refresh the UI
 
         except Exception as e:
             st.error(f"An error occurred: {e}")
+            message_display.markdown(f"**Error:** {str(e)}", unsafe_allow_html=True)
 
     else:
         st.error("Please enter a valid message.")
 
+# UI Input
 user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
 
 if st.button("Send"):
