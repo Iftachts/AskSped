@@ -74,19 +74,16 @@ convo = model.start_chat(history=[
 ])
 
 
-import streamlit as st
-
+# Define a function to handle message sending and displaying
 def send_and_display_message():
-    # Reinitialize the placeholder at each call to ensure it's fresh
-    message_display = st.empty()
-    if st.session_state.user_message.strip():  # Check for non-empty input
+    user_input = st.session_state.user_message.strip()
+    if user_input:
         try:
             with st.spinner('Sending...'):
-                convo.send_message(st.session_state.user_message)
+                convo.send_message(user_input)
                 response = convo.last.text
-            # Removed the debug write statement
             if response:
-                # Update the placeholder with the new response
+                # Use the placeholder defined outside to display the message
                 message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}</div>", unsafe_allow_html=True)
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
@@ -97,7 +94,13 @@ def send_and_display_message():
             message_display.markdown(f"**Error:** {str(e)}", unsafe_allow_html=True)
     else:
         st.error("Please enter a valid message.")
-# Set up UI for input
-user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
+
+# Ask for the user's API key and configure the API
+api_key = st.text_input("Enter your API Key")
+genai.configure(api_key=api_key)
+
+# Create placeholders and input fields
+user_message = st.text_input("Enter your message:", key="user_message")
+message_display = st.empty()  # This placeholder will now always be below the input field
 if st.button("Send"):
     send_and_display_message()
