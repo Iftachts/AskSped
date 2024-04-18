@@ -77,10 +77,16 @@ convo = model.start_chat(history=[
 ])
 
 
-# User message input
-user_message = st.text_input("שאל את חוזר מנכל החינוך המיוחד שעוסק בועדות:")
+def send_and_display_message():
+    if st.session_state.user_message:  # Check if there's a message to send
+        convo.send_message(st.session_state.user_message)
+        response = convo.last.text
+        st.write(response)
+        st.session_state.user_message = ""  # Clear the input field after sending
 
+# Text input that updates the session state
+user_message = st.text_input("שאל את חוזר מנכל החינוך המיוחד שעוסק בועדות:", key="user_message", on_change=send_and_display_message)
+
+# Button to manually trigger sending and displaying messages
 if st.button("Send"):
-    convo.send_message(user_message)
-    response = convo.last.text
-    st.write(response)
+    send_and_display_message()
