@@ -95,10 +95,6 @@ def send_and_display_message():
     else:
         st.error("Please enter a valid message.")
 
-# Ask for the user's API key and configure the API
-api_key = st.text_input("Enter your API Key")
-genai.configure(api_key=api_key)
-
 # Create placeholders and input fields
 user_message = st.text_input("Enter your message:", key="user_message")
 message_display = st.empty()  # This placeholder will now always be below the input field
