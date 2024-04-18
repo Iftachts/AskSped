@@ -79,18 +79,24 @@ convo = model.start_chat(history=[
 ])
 
 def send_and_display_message():
+    # Clear the previous message at the start of the function call
+    message_display.empty()
+
     if st.session_state.user_message.strip():  # Check for non-empty input
         try:
             with st.spinner('Sending...'):
                 convo.send_message(st.session_state.user_message)
                 response = convo.last.text
 
+            # Debug: Check what response is being captured
+            st.write(f"Debug: Response received: {response}")
+
             if response:
-                message_display.markdown(f"<div style='border:2px solid blue; padding:10px; margin-top:5px;'>**Response:** {response}</div>", unsafe_allow_html=True)
+                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}</div>", unsafe_allow_html=True)
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
 
-            # Clear the text input after the response is displayed
+            # Optionally, clear the text input after sending the message
             st.session_state.user_message = ""
             
         except Exception as e:
