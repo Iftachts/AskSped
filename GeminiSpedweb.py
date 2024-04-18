@@ -75,23 +75,22 @@ convo = model.start_chat(history=[
   },
 ])
 
-# Global placeholder for the message display
+# Create a global placeholder for the message display at the top level of your script
 message_display = st.empty()
 
 def send_and_display_message():
-    if st.session_state.user_message.strip():  # Ensure there's a non-empty message
+    if st.session_state.user_message.strip():  # Check for non-empty input
         try:
             convo.send_message(st.session_state.user_message)
             response = convo.last.text
-            st.write(f"Debug: Response received: {response}")  # Confirm response receipt
-            
-            if response:
-                # Update the placeholder with the new response
-                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}</div>", unsafe_allow_html=True)
-            else:
-                message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
-            
-            # Clear input field after sending
+            st.write(f"Debug: Response received: {response}")  # Display debug info
+
+            # Ensure the placeholder is cleared and updated with new content
+            message_display.empty()  # Clear any previous content
+            # Update with formatted HTML content
+            message_display.markdown(f"<div style='border:2px solid blue; padding:10px; margin-top:5px;'>**Response:** {response}</div>", unsafe_allow_html=True)
+
+            # Optionally, clear the text input after sending the message
             st.session_state.user_message = ""
 
         except Exception as e:
