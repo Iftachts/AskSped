@@ -84,9 +84,10 @@ def send_and_display_message():
             response = convo.last.text
 
         if response:
-            js_copy_text = response.replace("'", "&#39;")
+            # Sanitize the response for HTML and JavaScript
+            js_copy_text = response.replace("'", "\\'").replace("\n", "\\n")
             button_html = f"""
-            <button onclick="try{{navigator.clipboard.writeText('{js_copy_text}'); alert('Copied!');}}
+            <button onclick="try{{navigator.clipboard.writeText(`{js_copy_text}`); alert('Copied!');}}
                      catch(err){{console.error('Failed to copy:', err); alert('Failed to copy text.');}}">
                      Copy to Clipboard
             </button>"""
