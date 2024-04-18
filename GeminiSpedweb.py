@@ -81,18 +81,18 @@ convo = model.start_chat(history=[
 def send_and_display_message():
     if st.session_state.user_message.strip():  # Check for non-empty input
         try:
-            convo.send_message(st.session_state.user_message)
-            response = convo.last.text
-            st.write(f"Debug: Response received: {response}")  # Display debug info
+            with st.spinner('Sending...'):
+                convo.send_message(st.session_state.user_message)
+                response = convo.last.text
 
-            # Ensure the placeholder is cleared and updated with new content
-            message_display.empty()  # Clear any previous content
-            # Update with formatted HTML content
-            message_display.markdown(f"<div style='border:2px solid blue; padding:10px; margin-top:5px;'>**Response:** {response}</div>", unsafe_allow_html=True)
+            if response:
+                message_display.markdown(f"<div style='border:2px solid blue; padding:10px; margin-top:5px;'>**Response:** {response}</div>", unsafe_allow_html=True)
+            else:
+                message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
 
-            # Optionally, clear the text input after sending the message
+            # Clear the text input after the response is displayed
             st.session_state.user_message = ""
-
+            
         except Exception as e:
             st.error(f"An error occurred: {e}")
             message_display.markdown(f"**Error:** {str(e)}", unsafe_allow_html=True)
@@ -100,7 +100,7 @@ def send_and_display_message():
     else:
         st.error("Please enter a valid message.")
 
-# UI Input
+# UI for input
 user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
 
 if st.button("Send"):
