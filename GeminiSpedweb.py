@@ -1,6 +1,5 @@
 import streamlit as st
 import google.generativeai as genai
-
 # Create a global placeholder for the message display at the top level of your script
 message_display = st.empty()
 
