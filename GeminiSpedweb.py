@@ -87,7 +87,7 @@ def send_and_display_message():
                 message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'> {response}</div>", unsafe_allow_html=True)
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
-	@@ -94,6 +94,6 @@ def send_and_display_message():
+		@@ -94,6 +94,6 @@ def send_and_display_message():
             message_display.markdown(f"**Error:** {str(e)}", unsafe_allow_html=True)
     else:
         st.error("Please enter a valid message.")
