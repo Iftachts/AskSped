@@ -77,6 +77,7 @@ convo = model.start_chat(history=[
   },
 ])
 
+
 def send_and_display_message():
     if st.session_state.user_message.strip():
         with st.spinner('Sending...'):
@@ -84,15 +85,13 @@ def send_and_display_message():
             response = convo.last.text
 
         if response:
-            # Sanitize the response for HTML and JavaScript
-            js_copy_text = response.replace("'", "\\'").replace("\n", "\\n")
-            button_html = f"""
-            <button onclick="try{{navigator.clipboard.writeText(`{js_copy_text}`); alert('Copied!');}}
-                     catch(err){{console.error('Failed to copy:', err); alert('Failed to copy text.');}}">
-                     Copy to Clipboard
-            </button>"""
+            # Create the button HTML with JavaScript embedded
+            button_html = f"""<button onclick="try{{navigator.clipboard.writeText(`{response.replace('`', '\\`')}`); alert('Copied!');}}
+                     catch(err){{console.error('Failed to copy:', err); alert('Failed to copy text.');}}">Copy to Clipboard</button>"""
+
+            # Use markdown to render the button and the response with unsafe_allow_html set to True
             message_display = st.empty()
-            message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response} {button_html}</div>", unsafe_allow_html=True)
+            message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}<br>{button_html}</div>", unsafe_allow_html=True)
             st.success("Response is displayed. Click copy to clipboard.")
         else:
             st.error("No response received, please try again.")
