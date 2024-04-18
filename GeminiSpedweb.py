@@ -78,7 +78,6 @@ convo = model.start_chat(history=[
   },
 ])
 
-
 def send_and_display_message():
     # Reinitialize the placeholder at each call to ensure it's fresh
     message_display = st.empty()
@@ -89,10 +88,10 @@ def send_and_display_message():
                 convo.send_message(st.session_state.user_message)
                 response = convo.last.text
 
-            # Removed the debug write statement
             if response:
-                # Update the placeholder with the new response
-                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}</div>", unsafe_allow_html=True)
+                # Display the response with a copy button
+                copy_button = f"<button onclick='navigator.clipboard.writeText(`{response}`)'>Copy</button>"
+                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response} {copy_button}</div>", unsafe_allow_html=True)
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
 
