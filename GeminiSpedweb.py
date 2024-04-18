@@ -1,8 +1,22 @@
 import streamlit as st
 import google.generativeai as genai
+
+# Add custom styles for RTL text alignment
+st.markdown("""
+<style>
+/* Target the text input field */
+.css-1v4eu6x input {
+    text-align: right;  /* Align text to the right */
+}
+/* Target the label of the text input */
+.css-hi6a2p {
+    justify-content: flex-end;  /* Align label to the right */
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Create a global placeholder for the message display at the top level of your script
 message_display = st.empty()
-# Ask the user for their API key
 api_key = "AIzaSyCXZ0s6xe4Jk21Gs_sX7xDkyiRw4iZDF1s"
 genai.configure(api_key=api_key)
 # Set up the model and other configurations as in your provided code
