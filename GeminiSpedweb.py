@@ -78,9 +78,10 @@ convo = model.start_chat(history=[
   },
 ])
 
+
 def send_and_display_message():
-    # Clear the previous message at the start of the function call
-    message_display.empty()
+    # Reinitialize the placeholder at each call to ensure it's fresh
+    message_display = st.empty()
 
     if st.session_state.user_message.strip():  # Check for non-empty input
         try:
@@ -88,17 +89,17 @@ def send_and_display_message():
                 convo.send_message(st.session_state.user_message)
                 response = convo.last.text
 
-            # Debug: Check what response is being captured
-            st.write(f"Debug: Response received: {response}")
+            st.write(f"Debug: Response received: {response}")  # Log the response for debugging
 
             if response:
+                # Update the placeholder with the new response
                 message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}</div>", unsafe_allow_html=True)
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
 
-            # Optionally, clear the text input after sending the message
+            # Clear the input field after processing
             st.session_state.user_message = ""
-            
+
         except Exception as e:
             st.error(f"An error occurred: {e}")
             message_display.markdown(f"**Error:** {str(e)}", unsafe_allow_html=True)
@@ -106,7 +107,7 @@ def send_and_display_message():
     else:
         st.error("Please enter a valid message.")
 
-# UI for input
+# Set up UI for input
 user_message = st.text_input("Enter your message:", key="user_message", on_change=send_and_display_message)
 
 if st.button("Send"):
