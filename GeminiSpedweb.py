@@ -78,13 +78,19 @@ convo = model.start_chat(history=[
 
 
 def send_and_display_message():
-    if st.session_state.user_message:  # Check if there's a message to send
-        convo.send_message(st.session_state.user_message)
-        response = convo.last.text
-        st.write(response)
-        st.session_state.user_message = ""  # Clear the input field after sending
+    if st.session_state.user_message.strip():  # Check for non-empty input
+        try:
+            convo.send_message(st.session_state.user_message)
+            response = convo.last.text
+            st.write(response)
+            st.session_state.user_message = ""  # Clear input field after sending
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+            # Optionally, log the error or take other actions
+    else:
+        st.error("Please enter a valid message.")
 
-# Text input that updates the session state
+# Text input with session state
 user_message = st.text_input("שאל את חוזר מנכל החינוך המיוחד שעוסק בועדות:", key="user_message", on_change=send_and_display_message)
 
 # Button to manually trigger sending and displaying messages
