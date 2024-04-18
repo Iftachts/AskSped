@@ -79,6 +79,8 @@ convo = model.start_chat(history=[
 ])
 
 
+import streamlit as st
+
 def send_and_display_message():
     # Reinitialize the placeholder at each call to ensure it's fresh
     message_display = st.empty()
@@ -89,8 +91,7 @@ def send_and_display_message():
                 convo.send_message(st.session_state.user_message)
                 response = convo.last.text
 
-            st.write(f"Debug: Response received: {response}")  # Log the response for debugging
-
+            # Removed the debug write statement
             if response:
                 # Update the placeholder with the new response
                 message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>**Response:** {response}</div>", unsafe_allow_html=True)
