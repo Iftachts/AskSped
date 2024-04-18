@@ -1,6 +1,9 @@
 import streamlit as st
 import google.generativeai as genai
 
+# Create a global placeholder for the message display at the top level of your script
+message_display = st.empty()
+
 # Ask the user for their API key
 api_key = st.text_input("Enter your API Key")
 genai.configure(api_key=api_key)
@@ -74,9 +77,6 @@ convo = model.start_chat(history=[
     "parts": ["תודה על הפירוט המלא של רשימת הנספחים. זוהי אכן רשימה מקיפה של הטפסים, ההצהרות וההנחיות הנדרשות לצורך התנהלות תקינה של הוועדות השונות הפועלות מתוקף חוק החינוך המיוחד. \n\nהאם יש שאלות ספציפיות בנוגע לנספח מסויים או לתהליך מסויים?"]
   },
 ])
-
-# Create a global placeholder for the message display at the top level of your script
-message_display = st.empty()
 
 def send_and_display_message():
     if st.session_state.user_message.strip():  # Check for non-empty input
