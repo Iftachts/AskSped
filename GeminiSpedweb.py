@@ -79,12 +79,13 @@ message_display = st.empty()
 
 # Function to handle the sending and display of messages
 def send_and_display_message():
-    st.write("Function triggered")  # Debug: Confirm the function is triggered
-    
+    st.write("Function triggered")  # Confirm function is triggered
+
     if st.session_state.user_message.strip():  # Check for non-empty input
         try:
             convo.send_message(st.session_state.user_message)
             response = convo.last.text
+            st.write(f"Debug: Response received: {response}")  # Log the response for debugging
             if response:
                 # Clear previous content and update the placeholder
                 message_display.empty()
