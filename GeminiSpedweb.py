@@ -1,5 +1,15 @@
 import streamlit as st
 import google.generativeai as genai
+import os
+from pyairtable import Api
+
+# Airtable setup
+base_id = 'app8UFiZQuyxJ9zZp'
+table_name = 'info'
+personal_access_token = os.getenv(AirtableToken)  # Use environment variable in production 
+# Initialize the Airtable API and get the table
+api = Api(personal_access_token)
+table = api.table(base_id, table_name)
 
 # Create a global placeholder for the message display at the top level of your script
 message_display = st.empty()
@@ -84,6 +94,8 @@ def send_and_display_message():
             
             if response:
                 message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>{response}</div>", unsafe_allow_html=True)
+                 # Store the question and response in Airtable
+                record = table.create({'Question': user_input, 'Response': response})
             else:
                 message_display.markdown("**No response received, please try again.**", unsafe_allow_html=True)
         except Exception as e:
@@ -93,6 +105,8 @@ def send_and_display_message():
             st.session_state.user_message = ""
     else:
         st.error("Please enter a valid message.")
+
+
 st.title("שאל את חוזר המנכל")
 st.header("חוק יישום החינוך המיוחד")
 # Set up UI for input
