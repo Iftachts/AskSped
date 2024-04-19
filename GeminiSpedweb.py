@@ -93,7 +93,12 @@ def send_and_display_message():
             st.session_state.user_message = ""
     else:
         st.error("Please enter a valid message.")
-
+st.title("שאל את חוזר המנכל")
+st.header("חוק יישום החינוך המיוחד")
 # Set up UI for input
 user_message = st.text_area("שאל לגבי ועדות החינוך המיוחד:", key="user_message")
 send_button = st.button("Send", on_click=send_and_display_message)
+st.write("השאלה נשלחת למודל שפה (גוגל ג'מיני 1.5 פרו), אשר הוזן בחוזר המנכל, וממנו מתקבלות התשובות")
+st.write("המידע המופיע בתשובות לשאלות יכול להתאפיין באי דיוקים, מומלץ לוודא את נכונות המידע בחוזר המנכל")
+link = "https://apps.education.gov.il/mankal/Horaa.aspx?siduri=385"
+st.markdown(f'[לחץ כאן]({link}) לכניסה לחוזר המנכל עליו מתבססות התשובות ')
