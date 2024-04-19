@@ -13,7 +13,7 @@ table = api.table(base_id, table_name)
 
 # Create a global placeholder for the message display at the top level of your script
 message_display = st.empty()
-api_key = "AIzaSyCXZ0s6xe4Jk21Gs_sX7xDkyiRw4iZDF1s"
+api_key = os.getenv('GeminiApikey')
 genai.configure(api_key=api_key)
 # Set up the model and other configurations as in your provided code
 # Set up the model
