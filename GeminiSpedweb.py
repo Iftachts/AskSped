@@ -6,7 +6,7 @@ from pyairtable import Api
 # Airtable setup
 base_id = 'app8UFiZQuyxJ9zZp'
 table_name = 'info'
-personal_access_token = os.getenv(AirtableToken)  # Use environment variable in production 
+personal_access_token = os.getenv('AirtableToken')  # Use environment variable in production 
 # Initialize the Airtable API and get the table
 api = Api(personal_access_token)
 table = api.table(base_id, table_name)
