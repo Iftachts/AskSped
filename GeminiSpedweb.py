@@ -3,6 +3,28 @@ import google.generativeai as genai
 import os
 from pyairtable import Api
 
+st.markdown("""
+<style>
+    direction: RTL;
+    unicode-bidi: bidi-override;
+    text-align: Right;
+}
+
+/* Apply RTL to specific elements where Hebrew is expected */
+.hebrew-text {
+    direction: RTL;
+    unicode-bidi: bidi-override;
+    text-align: right;
+}
+
+/* This selector allows English content to remain LTR */
+.english-text {
+    direction: LTR;
+    unicode-bidi: normal;
+    text-align: left;
+}
+</style>
+""", unsafe_allow_html=True)
 # Airtable setup
 base_id = 'app8UFiZQuyxJ9zZp'
 table_name = 'info'
@@ -107,12 +129,26 @@ def send_and_display_message():
         st.error("Please enter a valid message.")
 
 
-st.title("שאל את חוזר המנכל")
+st.title("שאלו את חוזר המנכל")
 st.header("חוק יישום החינוך המיוחד")
 # Set up UI for input
-user_message = st.text_area("שאל לגבי ועדות החינוך המיוחד:", key="user_message")
-send_button = st.button("Send", on_click=send_and_display_message)
+user_message = st.text_area(label=' ', key="user_message", placeholder='כתבו כאן את שאלתכם')
+send_button = st.button("שלחו", on_click=send_and_display_message)
 st.write("השאלה נשלחת למודל שפה (גוגל ג'מיני 1.5 פרו), אשר הוזן בחוזר המנכל, וממנו מתקבלות התשובות")
 st.write("המידע המופיע בתשובות לשאלות יכול להתאפיין באי דיוקים, מומלץ לוודא את נכונות המידע בחוזר המנכל")
 link = "https://apps.education.gov.il/mankal/Horaa.aspx?siduri=385"
 st.markdown(f'[לחץ כאן]({link}) לכניסה לחוזר המנכל עליו מתבססות התשובות ')
+with st.expander("רשימת שאלות לדוגמא"):
+    st.markdown(
+        """
+        |   | שאלות לדוגמא|
+        |---|----------------------------------------------|
+        |   | אבקש רשימה מלאה של האבחנות הפסיכיאטריות המאפשרות מתן אפיון נפשי |
+        |   | יש לי תלמיד שאני מודאג לגביו, מה הם השלבים עד שיוכל לקבל עזרה נוספת? |
+        |   | באילו תנאים תלמיד שקיבל אפיון של לקות למידה יכול לקבל שעות סייעת? |
+        |   | מי הם חברי הצוות הרב מקצועי? |
+        """
+    )
+st.write('')
+st.write('')
+st.write('iftachts@gmail.com :ליצירת קשר')
