@@ -5,24 +5,33 @@ from pyairtable import Api
 
 st.markdown("""
 <style>
-    direction: RTL;
-    unicode-bidi: bidi-override;
-    text-align: Right;
-}
-
-/* Apply RTL to specific elements where Hebrew is expected */
-.hebrew-text {
-    direction: RTL;
-    unicode-bidi: bidi-override;
-    text-align: right;
-}
-
-/* This selector allows English content to remain LTR */
-.english-text {
-    direction: LTR;
-    unicode-bidi: normal;
-    text-align: left;
-}
+    body {
+        direction: rtl;
+    }
+    .stApp {
+        direction: rtl;
+    }
+    .stTextArea textarea {
+        direction: rtl;
+    }
+    .stMarkdown {
+        text-align: right;
+    }
+    .stButton {
+        text-align: right;
+    }
+    /* Apply RTL to specific elements where Hebrew is expected */
+    .hebrew-text {
+        direction: rtl;
+        unicode-bidi: bidi-override;
+        text-align: right;
+    }
+    /* This selector allows English content to remain LTR */
+    .english-text {
+        direction: ltr;
+        unicode-bidi: normal;
+        text-align: left;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -101,7 +110,7 @@ def send_and_display_message():
                 response = convo.last.text
             
             if response:
-                message_display.markdown(f"<div style='border:2px solid blue; padding:10px;'>{response}</div>", unsafe_allow_html=True)
+                message_display.markdown(f"<div class='hebrew-text' style='border:2px solid blue; padding:10px;'>{response}</div>", unsafe_allow_html=True)
                  # Store the question and response in Airtable
                 record = table.create({'Question': user_input, 'Response': response})
             else:
@@ -131,24 +140,25 @@ st.header("חוק יישום החינוך המיוחד")
 # Set up UI for input
 user_message = st.text_area(label=' ', key="user_message", placeholder='כתבו כאן את שאלתכם')
 send_button = st.button("שלחו", on_click=send_and_display_message)
-st.write("השאלה נשלחת למודל שפה (גוגל ג'מיני 1.5 פרו), אשר הוזן בחוזר המנכל, וממנו מתקבלות התשובות")
-st.write("המידע המופיע בתשובות לשאלות יכול להתאפיין באי דיוקים, מומלץ לוודא את נכונות המידע בחוזר המנכל")
+st.markdown("<div class='hebrew-text'>השאלה נשלחת למודל שפה (גוגל ג'מיני 1.5 פרו), אשר הוזן בחוזר המנכל, וממנו מתקבלות התשובות</div>", unsafe_allow_html=True)
+st.markdown("<div class='hebrew-text'>המידע המופיע בתשובות לשאלות יכול להתאפיין באי דיוקים, מומלץ לוודא את נכונות המידע בחוזר המנכל</div>", unsafe_allow_html=True)
 link = "https://apps.education.gov.il/mankal/Horaa.aspx?siduri=385"
-st.markdown(f'[לחץ כאן]({link}) לכניסה לחוזר המנכל עליו מתבססות התשובות ')
+st.markdown(f"<div class='hebrew-text'><a href='{link}'>לחץ כאן</a> לכניסה לחוזר המנכל עליו מתבססות התשובות</div>", unsafe_allow_html=True)
 with st.expander("רשימת שאלות לדוגמא"):
     st.markdown(
         """
+        <div class='hebrew-text'>
         |   | שאלות לדוגמא|
         |---|----------------------------------------------|
         |   | אבקש רשימה מלאה של האבחנות הפסיכיאטריות המאפשרות מתן אפיון נפשי |
         |   | יש לי תלמיד שאני מודאג לגביו, מה הם השלבים עד שיוכל לקבל עזרה נוספת? |
         |   | באילו תנאים תלמיד שקיבל אפיון של לקות למידה יכול לקבל שעות סייעת? |
         |   | מי הם חברי הצוות הרב מקצועי? |
-        """
+        </div>
+        """,
+        unsafe_allow_html=True
     )
-st.write('')
-st.write('')
-st.write('iftachts@gmail.com :ליצירת קשר')
+st.markdown("<div class='hebrew-text'>ליצירת קשר: iftachts@gmail.com</div>", unsafe_allow_html=True)
 
 # Feedback section
 st.header("משוב")
