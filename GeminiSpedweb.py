@@ -63,7 +63,7 @@ safety_settings = [
     "threshold": "BLOCK_ONLY_HIGH"
   },
 ]
-model = genai.GenerativeModel(model_name="gemini-1.5-flash-001 gemini-1.5-flash-002",
+model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 convo = model.start_chat(history=[
