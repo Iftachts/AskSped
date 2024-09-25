@@ -5,32 +5,33 @@ from pyairtable import Api
 
 st.markdown("""
 <style>
-    body {
-        direction: rtl;
-    }
     .stApp {
         direction: rtl;
     }
     .stTextArea textarea {
         direction: rtl;
+        text-align: right;
     }
     .stMarkdown {
         text-align: right;
     }
-    .stButton {
-        text-align: right;
+    .stButton > button {
+        float: right;
     }
     /* Apply RTL to specific elements where Hebrew is expected */
     .hebrew-text {
         direction: rtl;
-        unicode-bidi: bidi-override;
         text-align: right;
     }
     /* This selector allows English content to remain LTR */
     .english-text {
         direction: ltr;
-        unicode-bidi: normal;
         text-align: left;
+    }
+    /* Override Streamlit's default left alignment for certain components */
+    .stSelectbox, .stMultiSelect {
+        direction: rtl;
+        text-align: right;
     }
 </style>
 """, unsafe_allow_html=True)
