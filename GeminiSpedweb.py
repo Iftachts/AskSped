@@ -33,6 +33,18 @@ st.markdown("""
         direction: rtl;
         text-align: right;
     }
+    /* Style for RTL tables */
+    .rtl-table {
+        direction: rtl;
+        width: 100%;
+    }
+    .rtl-table th, .rtl-table td {
+        text-align: right;
+        padding: 8px;
+    }
+    .rtl-table th {
+        background-color: #f2f2f2;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -148,14 +160,28 @@ st.markdown(f"<div class='hebrew-text'><a href='{link}'>לחץ כאן</a> לכנ
 with st.expander("רשימת שאלות לדוגמא"):
     st.markdown(
         """
-        <div class='hebrew-text'>
-        |   | שאלות לדוגמא|
-        |---|----------------------------------------------|
-        |   | אבקש רשימה מלאה של האבחנות הפסיכיאטריות המאפשרות מתן אפיון נפשי |
-        |   | יש לי תלמיד שאני מודאג לגביו, מה הם השלבים עד שיוכל לקבל עזרה נוספת? |
-        |   | באילו תנאים תלמיד שקיבל אפיון של לקות למידה יכול לקבל שעות סייעת? |
-        |   | מי הם חברי הצוות הרב מקצועי? |
-        </div>
+        <table class="rtl-table">
+        <tr>
+            <th>מספר</th>
+            <th>שאלות לדוגמא</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>אבקש רשימה מלאה של האבחנות הפסיכיאטריות המאפשרות מתן אפיון נפשי</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>יש לי תלמיד שאני מודאג לגביו, מה הם השלבים עד שיוכל לקבל עזרה נוספת?</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>באילו תנאים תלמיד שקיבל אפיון של לקות למידה יכול לקבל שעות סייעת?</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>מי הם חברי הצוות הרב מקצועי?</td>
+        </tr>
+        </table>
         """,
         unsafe_allow_html=True
     )
